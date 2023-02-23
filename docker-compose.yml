@@ -2,7 +2,7 @@ version: '3'
 services:
   bms-core:
     container_name: bms-core
-    build: ./Dockerfile
+    build: .
     volumes:
       - ./nginx.conf:/etc/nginx/nginx/conf
     ports:
