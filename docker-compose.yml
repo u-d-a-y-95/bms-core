@@ -1,17 +1,32 @@
 version: '3'
+
 services:
   bms-auth:
     container_name: bms-auth
-    build: 
+    build:
       context: ./../bms-auth
       dockerfile: Dockerfile
     volumes:
       - ./../bms-auth:/app
     ports:
       - 5001:5001
+    env_file:
+      - ./../bms-auth/.env
+    depends_on:
+      - bms-db
+
+  bms-db:
+    container_name: bms-db
+    image: postgres
+    restart: always
+    volumes:
+      - pgData:/var/lib/postgresql/data
     environment:
-      - PORT=5001
-    
+      POSTGRES_USER: bms-admin
+      POSTGRES_PASSWORD: bms-admin
+      POSTGRES_DB: BMS
+    ports:
+      - "5432:5432"
   bms-core:
     container_name: bms-core
     build: .
@@ -21,3 +36,6 @@ services:
       - 80:80
     depends_on:
       - bms-auth
+
+volumes:
+  pgData:
