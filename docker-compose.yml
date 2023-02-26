@@ -15,6 +15,20 @@ services:
     depends_on:
       - bms-db
 
+  bms-organization:
+    container_name: bms-organization
+    build:
+      context: ./../bms-organization
+      dockerfile: Dockerfile
+    ports:
+      - 5002:5002
+    volumes:
+      - ./../bms-organization:/app
+    env_file:
+      - ./../bms-organization/.env
+    depends_on:
+      - bms-db
+
   bms-db:
     container_name: bms-db
     image: postgres
@@ -27,6 +41,7 @@ services:
       POSTGRES_DB: BMS
     ports:
       - "5432:5432"
+
   bms-core:
     container_name: bms-core
     build: .
@@ -36,6 +51,7 @@ services:
       - 80:80
     depends_on:
       - bms-auth
+      - bms-organization
 
 volumes:
   pgData:
