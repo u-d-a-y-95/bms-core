@@ -15,17 +15,17 @@ services:
     depends_on:
       - bms-db
 
-  bms-organization:
-    container_name: bms-organization
+  bms-org:
+    container_name: bms-org
     build:
-      context: ./../bms-organization
+      context: ./../bms-org
       dockerfile: Dockerfile
     ports:
       - 5002:5002
     volumes:
-      - ./../bms-organization:/app
+      - ./../bms-org:/app
     env_file:
-      - ./../bms-organization/.env
+      - ./../bms-org/.env
     depends_on:
       - bms-db
 
@@ -51,7 +51,7 @@ services:
       - 80:80
     depends_on:
       - bms-auth
-      - bms-organization
+      - bms-org
 
 volumes:
   pgData:
