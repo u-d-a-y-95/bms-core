@@ -14,6 +14,7 @@ services:
       - ./../bms-auth/.env
     depends_on:
       - bms-db
+      - bms-rabbitmq
 
   bms-org:
     container_name: bms-org
@@ -28,6 +29,7 @@ services:
       - ./../bms-org/.env
     depends_on:
       - bms-db
+      - bms-rabbitmq
 
   bms-db:
     container_name: bms-db
@@ -42,6 +44,19 @@ services:
     ports:
       - "5432:5432"
 
+  bms-rabbitmq:
+    container_name: bms-rabbitmq
+    image: rabbitmq:management-alpine
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin
+    volumes:
+      - rabbitmqData:/var/lib/rabbitmq
+
+
   bms-core:
     container_name: bms-core
     build: .
@@ -55,3 +70,4 @@ services:
 
 volumes:
   pgData:
+  rabbitmqData:
